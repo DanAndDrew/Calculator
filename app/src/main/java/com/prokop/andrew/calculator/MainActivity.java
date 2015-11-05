@@ -52,67 +52,30 @@ public class MainActivity extends AppCompatActivity {
         btnAddition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((operand1.getText().length()>0) && (operand2.getText().length()>0)) {
-                    double oper1 = Double.parseDouble(operand1.getText().toString());
-                    double oper2 = Double.parseDouble(operand2.getText().toString());
-
-                    double theResult = oper1 + oper2;
-                    txtResult.setText(Double.toString(theResult));
-                } else {
-                    Toast.makeText(MainActivity.this, "Please enter numbers in both operand fields",Toast.LENGTH_LONG).show();
-                }
+                completeCalculation("+");
             }
         });
 
         btnSubtraction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((operand1.getText().length()>0) && (operand2.getText().length()>0)) {
-                    double oper1 = Double.parseDouble(operand1.getText().toString());
-                    double oper2 = Double.parseDouble(operand2.getText().toString());
-
-                    double theResult = oper1 - oper2;
-                    txtResult.setText(Double.toString(theResult));
-                } else {
-                    Toast.makeText(MainActivity.this, "Please enter numbers in both operand fields",Toast.LENGTH_LONG).show();
-                }
+                completeCalculation("-");
             }
         });
 
         btnDivision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((operand1.getText().length()>0) && (operand2.getText().length()>0)) {
-                    double oper1 = Double.parseDouble(operand1.getText().toString());
-                    double oper2 = Double.parseDouble(operand2.getText().toString());
-
-                    double theResult = oper1 / oper2;
-                    txtResult.setText(Double.toString(theResult));
-                } else {
-                    Toast.makeText(MainActivity.this, "Please enter numbers in both operand fields",Toast.LENGTH_LONG).show();
-                }
+                completeCalculation("/");
             }
         });
 
         btnMultiplication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((operand1.getText().length()>0) && (operand2.getText().length()>0)) {
-                    double oper1 = Double.parseDouble(operand1.getText().toString());
-                    double oper2 = Double.parseDouble(operand2.getText().toString());
-
-                    double theResult = oper1 * oper2;
-                    txtResult.setText(Double.toString(theResult));
-                } else {
-                    Toast.makeText(MainActivity.this, "Please enter numbers in both operand fields",Toast.LENGTH_LONG).show();
-                }
+                completeCalculation("*");
             }
         });
-
-
-
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -125,6 +88,56 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private boolean editTextNotBlank() {
+        boolean textNotBlank = false;
+        if ((operand1.getText().length()>0) && (operand2.getText().length()>0)) {
+              textNotBlank = true;
+        }
+        return textNotBlank;
+    }
+
+    private double getOperand1() {
+        return Double.parseDouble(operand1.getText().toString());
+    }
+
+    private double getOperand2() {
+        return Double.parseDouble(operand2.getText().toString());
+    }
+
+    private void resetAndSetResultAsOperand1() {
+        operand1.setText(txtResult.getText());
+        txtResult.setText("0.00");
+        operand2.setText("");
+        operand2.requestFocus();
+    }
+
+    private void completeCalculation(String action) {
+        if (editTextNotBlank() && Double.parseDouble(txtResult.getText().toString()) == 0.0) {
+            switch (action) {
+                case "+":
+                    txtResult.setText(Double.toString(getOperand1() + getOperand2()));
+                    break;
+                case "-":
+                    txtResult.setText(Double.toString(getOperand1() - getOperand2()));
+                    break;
+                case "/":
+                    txtResult.setText(Double.toString(getOperand1() / getOperand2()));
+                    break;
+                case "*":
+                    txtResult.setText(Double.toString(getOperand1() * getOperand2()));
+                    break;
+                default:
+                    break;
+
+            }
+        }else if (editTextNotBlank() && Double.parseDouble(txtResult.getText().toString()) != 0.0) {
+            resetAndSetResultAsOperand1();
+        }
+        else {
+            Toast.makeText(MainActivity.this, "Please enter numbers in both operand fields",Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
